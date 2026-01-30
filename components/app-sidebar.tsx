@@ -76,7 +76,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
                 <Image
                   alt="Cadre AI"
                   height={24}
-                  src="/images/cadre_ai.png"
+                  src="/images/cadre-box.png"
                   width={24}
                 />
                 <span className="cursor-pointer font-semibold text-lg hover:bg-muted rounded-md px-1">
