@@ -8,7 +8,7 @@ export function isAgentType(value: string): value is AgentType {
 export const agents: Record<AgentType, { name: string; description: string }> =
   {
     "agent-builder": {
-      name: "Agent Builder",
+      name: "Agent Requirements",
       description: "Build custom AI agents",
     },
   };
