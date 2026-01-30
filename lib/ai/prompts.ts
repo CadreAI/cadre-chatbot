@@ -1,5 +1,6 @@
 import type { Geo } from "@vercel/functions";
 import type { ArtifactKind } from "@/components/artifact";
+import { agentPrompts, isAgentType } from "@/lib/ai/agents";
 
 export const artifactsPrompt = `
 Artifacts is a special user interface mode that helps users with writing, editing, and other content creation tasks. When artifact is open, it is on the right side of the screen, while the conversation is on the left side. When creating or updating documents, changes are reflected in real-time on the artifacts and visible to the user.
@@ -59,22 +60,35 @@ About the origin of user's request:
 export const systemPrompt = ({
   selectedChatModel,
   requestHints,
+  agentType,
 }: {
   selectedChatModel: string;
   requestHints: RequestHints;
+  agentType?: string | null;
 }) => {
   const requestPrompt = getRequestPromptFromHints(requestHints);
+
+  const basePrompt = agentType
+    ? getAgentPrompt(agentType)
+    : regularPrompt;
 
   // reasoning models don't need artifacts prompt (they can't use tools)
   if (
     selectedChatModel.includes("reasoning") ||
     selectedChatModel.includes("thinking")
   ) {
-    return `${regularPrompt}\n\n${requestPrompt}`;
+    return `${basePrompt}\n\n${requestPrompt}`;
   }
 
-  return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
+  return `${basePrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
 };
+
+function getAgentPrompt(agentType: string): string {
+  if (isAgentType(agentType)) {
+    return agentPrompts[agentType];
+  }
+  return regularPrompt;
+}
 
 export const codePrompt = `
 You are a Python code generator that creates self-contained, executable code snippets. When writing code:
