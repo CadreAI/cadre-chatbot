@@ -1,13 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { User } from "next-auth";
+type User = { id: string; email: string; name?: string };
 import { useState } from "react";
 import { toast } from "sonner";
 import { useSWRConfig } from "swr";
 import { unstable_serialize } from "swr/infinite";
-import { PlusIcon, TrashIcon } from "@/components/icons";
+import { BotIcon, PlusIcon, TrashIcon } from "@/components/icons";
+import { agents, type AgentType } from "@/lib/ai/agents";
 import {
   getChatHistoryPaginationKey,
   SidebarHistory,
@@ -71,8 +73,14 @@ export function AppSidebar({ user }: { user: User | undefined }) {
                   setOpenMobile(false);
                 }}
               >
-                <span className="cursor-pointer rounded-md px-2 font-semibold text-lg hover:bg-muted">
-                  Chatbot
+                <Image
+                  alt="Cadre AI"
+                  height={24}
+                  src="/images/cadre_ai.png"
+                  width={24}
+                />
+                <span className="cursor-pointer font-semibold text-lg hover:bg-muted rounded-md px-1">
+                  Cadre AI Chat
                 </span>
               </Link>
               <div className="flex flex-row gap-1">
@@ -117,6 +125,27 @@ export function AppSidebar({ user }: { user: User | undefined }) {
           </SidebarMenu>
         </SidebarHeader>
         <SidebarContent>
+          <div className="px-2 py-1">
+            <div className="px-2 py-1 text-xs font-medium text-muted-foreground">
+              Agents
+            </div>
+            {(Object.entries(agents) as [AgentType, { name: string; description: string }][]).map(
+              ([agentId, agent]) => (
+                <button
+                  className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted"
+                  key={agentId}
+                  onClick={() => {
+                    setOpenMobile(false);
+                    router.push(`/?agent=${agentId}`);
+                  }}
+                  type="button"
+                >
+                  <BotIcon />
+                  <span>{agent.name}</span>
+                </button>
+              )
+            )}
+          </div>
           <SidebarHistory user={user} />
         </SidebarContent>
         <SidebarFooter>{user && <SidebarUserNav user={user} />}</SidebarFooter>

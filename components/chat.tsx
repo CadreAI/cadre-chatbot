@@ -39,6 +39,7 @@ export function Chat({
   initialVisibilityType,
   isReadonly,
   autoResume,
+  agentType,
 }: {
   id: string;
   initialMessages: ChatMessage[];
@@ -46,6 +47,7 @@ export function Chat({
   initialVisibilityType: VisibilityType;
   isReadonly: boolean;
   autoResume: boolean;
+  agentType?: string | null;
 }) {
   const router = useRouter();
 
@@ -126,6 +128,7 @@ export function Chat({
               : { message: lastMessage }),
             selectedChatModel: currentModelIdRef.current,
             selectedVisibilityType: visibilityType,
+            ...(agentType ? { selectedAgentType: agentType } : {}),
             ...request.body,
           },
         };
@@ -210,6 +213,7 @@ export function Chat({
         <div className="sticky bottom-0 z-1 mx-auto flex w-full max-w-4xl gap-2 border-t-0 bg-background px-2 pb-3 md:px-4 md:pb-4">
           {!isReadonly && (
             <MultimodalInput
+              agentType={agentType}
               attachments={attachments}
               chatId={id}
               input={input}
