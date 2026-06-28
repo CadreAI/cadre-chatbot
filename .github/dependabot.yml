@@ -1,0 +1,23 @@
+# Dependabot config — managed by CadreAI/platform scripts/rollout-dependabot.py
+# Source of truth: https://github.com/CadreAI/platform/templates/dependabot.yml
+# Groups all security updates into one PR per ecosystem per week.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      security:
+        applies-to: security-updates
+        patterns: ["*"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      security:
+        applies-to: security-updates
+        patterns: ["*"]
