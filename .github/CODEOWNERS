@@ -1,0 +1,7 @@
+# Infrastructure and CI/CD changes require platform-team review
+# (Cadre IaC standardization — ClickUp 86ajemztj)
+/infra/              @devinross-cadreai @eduardoblandon-cadre @samholmes
+*.tf                 @devinross-cadreai @eduardoblandon-cadre @samholmes
+cdk.json             @devinross-cadreai @eduardoblandon-cadre @samholmes
+/.github/workflows/  @devinross-cadreai @eduardoblandon-cadre @samholmes
+/.github/CODEOWNERS  @devinross-cadreai @eduardoblandon-cadre @samholmes
